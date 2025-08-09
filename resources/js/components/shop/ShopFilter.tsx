@@ -53,7 +53,7 @@ const ShopFilter = () => {
 
   // Filter panel content
   const filterPanel = (
-    <div className="bg-gray-100 rounded-lg p-4 w-full max-w-xs mx-auto">
+    <div className="bg-gray-100 rounded-lg p-4 w-full max-w-xs mx-auto text-black">
       <h2 className="text-xl font-semibold mb-4">Filter</h2>
       {/* Harga */}
       <div className="mb-4">
