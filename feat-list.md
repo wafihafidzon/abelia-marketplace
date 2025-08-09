@@ -15,7 +15,8 @@
 
 ### Admin Panel (Filament)
 - [x] ProductResource (dasar)
-- [ ] ProductResource (advance: dapat memilih size (jika dia memilih size maka bisa set stock tiap size, jika tidak set size, maka stoknya hanya ada 1), star / rating product diset oleh admin)
+- [x] ProductResource (advance: dapat memilih size (jika dia memilih size maka bisa set stock tiap size, jika tidak set size, maka stoknya hanya ada 1), star / rating product diset oleh admin)
+- [x] ProductResource (kurang untuk star)
 - [x] ImagesRelationManager
 - [x] CategoryResource (dasar)
 - [ ] CategoryResource (advance: seperti parent and child)
