@@ -4,20 +4,26 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Resources\CategoryResource\RelationManagers;
+use App\Filament\Resources\CategoryResource\RelationManagers\ChildrenRelationManager;
 use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereNull('parent_id');
+    }
 
     public static function form(Form $form): Form
     {
@@ -29,9 +35,10 @@ class CategoryResource extends Resource
 
                 Forms\Components\Select::make('parent_id')
                     ->label('Parent Category')
-                    ->relationship('parent', 'name')
+                    ->relationship('parent', 'name', modifyQueryUsing: fn (Builder $query) => $query->whereNull('parent_id'))
                     ->searchable()
-                    ->nullable(),
+                    ->nullable()
+                    ->default(request()->get('parent_id')),
 
             ]);
     }
@@ -41,7 +48,7 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('parent.name')->label('Parent')->sortable(),
+                Tables\Columns\TextColumn::make('children_count')->counts('children')->label('Children'),
             ])
             ->defaultSort('id', 'desc')
             ->filters([
@@ -49,6 +56,10 @@ class CategoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Action::make('Add Child')
+                    ->url(fn (Category $record): string => static::getUrl('create', ['parent_id' => $record->id]))
+                    ->icon('heroicon-o-plus-circle')
+                    ->color('success'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -60,7 +71,7 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ChildrenRelationManager::class,
         ];
     }
 
