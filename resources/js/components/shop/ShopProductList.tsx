@@ -30,7 +30,7 @@ const products = [
 ];
 
 const ShopProductList = () => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-black">
     {products.map((p, i) => (
       <div key={i} className="bg-white border rounded-lg shadow p-3 flex flex-col relative group items-start">
         {/* Image + Floating Buttons */}
@@ -58,4 +58,4 @@ const ShopProductList = () => (
   </div>
 );
 
-export default ShopProductList; 
+export default ShopProductList;
